@@ -1,11 +1,54 @@
 require('dotenv').config();
+const mongoose = require('mongoose');
 
+// Establish MongoDB connection
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch(err => {
+    console.error('Error connecting to MongoDB:', err);
+  });
 
-let Person;
+const { Schema } = mongoose;
 
+// Define the schema and model
+const personSchema = new Schema({
+  name: {
+    required: true,
+    type: String
+  },
+  age: Number,
+  favouriteFoods: [String]
+});
+
+const Person = mongoose.model("Person", personSchema);
+
+// The function that will save the person
 const createAndSavePerson = (done) => {
-  done(null /*, data*/);
+  const person1 = new Person({
+    name: "Tsholofetso Pooe",
+    age: 31,
+    favouriteFoods: ["Bread", "Butter"]
+  });
+
+  person1.save()
+    .then((savedPerson) => {
+      done(null, savedPerson);  // If successful, pass the saved person to done
+    })
+    .catch((err) => {
+      done(err);  // If there's an error, pass it to done
+    });
 };
+
+createAndSavePerson((err, savedPerson) => {
+  if (err) {
+    console.error('Error saving person:', err);  // Handle any errors
+  } else {
+    console.log('Saved person:', savedPerson);  // Handle successful saving
+  }
+});
+
 
 const createManyPeople = (arrayOfPeople, done) => {
   done(null /*, data*/);
