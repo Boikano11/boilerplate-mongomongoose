@@ -15,11 +15,20 @@ const { Schema } = mongoose;
 // Define the schema and model
 const personSchema = new Schema({
   name: {
+    type: String,
     required: true,
-    type: String
+    minlength: 3, // Minimum length
+    maxlength: 50 // Maximum length
   },
-  age: Number,
-  favouriteFoods: [String]
+  age: {
+    type: Number,
+    min: 0, // Minimum value
+    max: 120 // Maximum value
+  },
+  favoriteFoods: {
+    type: [String],
+    enum: ['Pizza', 'Bread', 'Butter', 'Pasta'] // Restrict values
+  }
 });
 
 const Person = mongoose.model("Person", personSchema);
@@ -29,7 +38,7 @@ const createAndSavePerson = (done) => {
   const person1 = new Person({
     name: "Tsholofetso Pooe",
     age: 31,
-    favouriteFoods: ["Bread", "Butter"]
+    favoriteFoods: ["Bread", "Butter"]
   });
 
   person1.save()
