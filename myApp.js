@@ -50,12 +50,28 @@ createAndSavePerson((err, data) => {
   }
 });
 
-
-
 // Placeholder functions (not implemented)
+const arrayOfPeople = [{
+  name: 'Khama Mofokeng',
+  age: 32,
+  favoriteFoods: ['Banana', 'Apple']
+},{
+  name: 'Karabo Radebe',
+  age: 30,
+  favoriteFoods: ['Skhambane', 'Pizza']
+},{
+  name: 'Tsholofetso Pooe',
+  age: 31,
+  favoriteFoods: ['Stake', 'Burger']
+}];
+
 const createManyPeople = (arrayOfPeople, done) => {
-  done(null /*, data*/);
+  Person.create(arrayOfPeople, (err, data)=>{
+    if(err) return done(err);
+    done(null, data);
+  });
 };
+
 
 const findPeopleByName = (personName, done) => {
   done(null /*, data*/);
