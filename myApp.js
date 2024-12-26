@@ -2,7 +2,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 
 // Establish MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('Connected to MongoDB');
   })
@@ -33,25 +33,29 @@ const Person = mongoose.model("Person", personSchema);
 
 // Function to create and save a person
 const createAndSavePerson = (done) => {
-  const person1 = new Person({
-    name: "Tsholofetso Pooe",
+  
+  const Person1 = new Person({
+    name: "Kgosi Pooe",
     age: 31,
     favoriteFoods: ["Bread", "Butter"]
   });
 
-  person1.save()
-    .then(savedPerson => done(null, savedPerson))
-    .catch(err => done(err));
+  Person1.save((err, data)=>{
+    if(err) return done(err);
+    return done(null, data);
+  });// Pass the result to the callback
+  
 };
 
-// Test the createAndSavePerson function
-createAndSavePerson((err, savedPerson) => {
+createAndSavePerson((err, data) => {
   if (err) {
-    console.error('Error saving person:', err);
+    console.error("Error:", err);
   } else {
-    console.log('Saved person:', savedPerson);
+    console.log("Saved person:", data);
   }
 });
+
+
 
 // Placeholder functions (not implemented)
 const createManyPeople = (arrayOfPeople, done) => {
